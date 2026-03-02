@@ -29,4 +29,9 @@ public class BusinessCourseImpl implements IBusinessCourse {
     public boolean updateCourse(Courses course) {
         return coursesDAO.updateCourse(course);
     }
+
+    @Override
+    public boolean deleteCourse(int id) {
+        return  coursesDAO.deleteCourse(id);
+    }
 }

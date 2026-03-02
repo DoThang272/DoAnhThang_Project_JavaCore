@@ -33,7 +33,7 @@ public class ManagementCourse {
         if (businessCourse.getCourseById(id) == null) {
             System.out.println("Không tồn tại khóa học này.");
         } else {
-            while (true){
+            while (true) {
                 Courses course = businessCourse.getCourseById(id);
                 System.out.println("Mời chọn phần bạn muốn sửa: ");
                 System.out.println("1. Sửa tên khóa học: ");
@@ -60,8 +60,35 @@ public class ManagementCourse {
                 boolean result = businessCourse.updateCourse(course);
                 if (result) {
                     System.out.println("Sửa thành công");
-                }else System.err.println("Có lỗi trong quá trình sửa.");
+                } else System.err.println("Có lỗi trong quá trình sửa.");
             }
+        }
+    }
+
+
+    public void deleteCourse(Scanner scanner) {
+        System.out.print("Nhập id khóa học mà bạn muốn xóa: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        if (businessCourse.getCourseById(id) == null) {
+            System.out.println("Không tồn tại khóa học này");
+        } else {
+            System.out.println("Bạn có chắc chắn muốn xóa khóa học này: ");
+            System.out.println("1. Có");
+            System.out.println("2. Không");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    boolean result = businessCourse.deleteCourse(id);
+                    if (result) {
+                        System.out.println("Xóa khóa học thành công");
+                    } else System.err.println("Xóa khóa học không thành công.");
+                    break;
+                case 2:
+                    return;
+                default:
+                    System.err.println("Chỉ được chọn 1 trong 2");
+            }
+
         }
     }
 
@@ -87,6 +114,7 @@ public class ManagementCourse {
                     editCourse(scanner);
                     break;
                 case 4:
+                    deleteCourse(scanner);
                     break;
                 case 5:
                     break;

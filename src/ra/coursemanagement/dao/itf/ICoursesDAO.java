@@ -9,4 +9,5 @@ public interface ICoursesDAO {
     boolean insertCourses(Courses courses);
     Courses getCourseById(int id);
     boolean updateCourse(Courses courses);
+    boolean deleteCourse(int id);
 }

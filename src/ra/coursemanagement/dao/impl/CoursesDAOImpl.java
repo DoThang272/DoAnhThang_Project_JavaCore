@@ -116,4 +116,22 @@ public class CoursesDAOImpl implements ICoursesDAO {
         }
         return  false;
     }
+
+    @Override
+    public boolean deleteCourse(int id) {
+        Connection conn = null;
+        CallableStatement callableStatement = null;
+        try {
+            conn = ConnectionDB.openConnection();
+            callableStatement = conn.prepareCall("call delete_course_by_id(?)");
+            callableStatement.setInt(1,id);
+            callableStatement.execute();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            ConnectionDB.closeConnection(conn,callableStatement);
+        }
+        return  false;
+    }
 }

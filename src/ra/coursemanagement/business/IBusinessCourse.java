@@ -9,4 +9,5 @@ public interface IBusinessCourse {
     boolean addCourse(Courses course);
     Courses getCourseById(int id);
     boolean updateCourse(Courses course);
+    boolean deleteCourse(int id);
 }
