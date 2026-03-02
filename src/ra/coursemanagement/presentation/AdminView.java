@@ -17,7 +17,6 @@ public class AdminView {
             System.out.println("=======================");
             System.out.print("Chọn chức năng: ");
             int choice = Integer.parseInt(scanner.nextLine());
-
             switch (choice) {
                 case 1:
                     mc.displayMenuCourse();
