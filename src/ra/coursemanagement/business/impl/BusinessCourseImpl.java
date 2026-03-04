@@ -34,4 +34,14 @@ public class BusinessCourseImpl implements IBusinessCourse {
     public boolean deleteCourse(int id) {
         return  coursesDAO.deleteCourse(id);
     }
+
+    @Override
+    public List<Courses> getCourseByName(String name) {
+        return coursesDAO.getCourseByName(name);
+    }
+
+    @Override
+    public List<Courses> getAllCoursesSortById(String diraction) {
+        return coursesDAO.getAllSortById(diraction);
+    }
 }

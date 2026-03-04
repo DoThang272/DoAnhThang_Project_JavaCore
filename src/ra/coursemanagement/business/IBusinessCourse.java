@@ -10,4 +10,6 @@ public interface IBusinessCourse {
     Courses getCourseById(int id);
     boolean updateCourse(Courses course);
     boolean deleteCourse(int id);
+    List<Courses> getCourseByName(String name);
+    List<Courses> getAllCoursesSortById(String diraction);
 }

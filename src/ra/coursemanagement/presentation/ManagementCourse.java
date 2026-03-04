@@ -6,7 +6,6 @@ import ra.coursemanagement.business.impl.BusinessCourseImpl;
 import ra.coursemanagement.business.valid.ValidCourse;
 import ra.coursemanagement.model.entity.Courses;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -65,6 +64,42 @@ public class ManagementCourse {
         }
     }
 
+    public static void findCourseByName(Scanner scanner) {
+        boolean isExit = true;
+        while (isExit) {
+            System.out.print("Nhập tên khóa học mà bạn muốn tìm: ");
+            String nameSearch = scanner.nextLine();
+            List<Courses> listCourses = businessCourse.getCourseByName(nameSearch);
+            if (listCourses == null) {
+                System.out.println("Không tồn tại tên bạn muốn tìm");
+            } else {
+                listCourses.forEach(System.out::println);
+            }
+            isExit = false;
+        }
+    }
+
+    public static void sortCourseById(Scanner scanner) {
+        while (true) {
+            System.out.println("Chọn loại sắp xếp theo id: ");
+            System.out.println("1. Sắp xếp theo id giảm dần.");
+            System.out.println("2. Sắp xếp theo id tăng dần");
+            System.out.println("3. Thoát");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    businessCourse.getAllCoursesSortById("desc").forEach(System.out::println);
+                    break;
+                case 2:
+                    businessCourse.getAllCoursesSortById("asc").forEach(System.out::println);
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.err.println("Chỉ được chọn 1 hoặc 2");
+            }
+        }
+    }
 
     public void deleteCourse(Scanner scanner) {
         System.out.print("Nhập id khóa học mà bạn muốn xóa: ");
@@ -117,8 +152,10 @@ public class ManagementCourse {
                     deleteCourse(scanner);
                     break;
                 case 5:
+                    findCourseByName(scanner);
                     break;
                 case 6:
+                    sortCourseById(scanner);
                     break;
                 case 7:
                     return;

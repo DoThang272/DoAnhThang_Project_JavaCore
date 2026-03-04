@@ -160,10 +160,8 @@ public class ManagementStudent {
             List<Student> listStu = businessStudent.getStByName(nameFindStu);
             if (listStu == null) {
                 System.out.println("Không tồn tại sinh viên bạn tìm");
-                isExit = false;
             } else {
                 listStu.forEach(System.out::println);
-
             }
             isExit = false;
         } while (isExit);

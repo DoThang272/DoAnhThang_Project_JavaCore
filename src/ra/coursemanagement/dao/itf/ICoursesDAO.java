@@ -10,4 +10,6 @@ public interface ICoursesDAO {
     Courses getCourseById(int id);
     boolean updateCourse(Courses courses);
     boolean deleteCourse(int id);
+    List<Courses> getCourseByName(String name);
+    List<Courses> getAllSortById(String diraction);
 }
