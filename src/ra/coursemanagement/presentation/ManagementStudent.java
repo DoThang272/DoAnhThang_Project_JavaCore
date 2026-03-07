@@ -1,8 +1,11 @@
 package ra.coursemanagement.presentation;
 
+import ra.coursemanagement.TablePrinter;
 import ra.coursemanagement.business.IBusinessStudent;
 import ra.coursemanagement.business.impl.BusinessStudentImpl;
 import ra.coursemanagement.business.valid.ValidStudent;
+import ra.coursemanagement.config.StudentSex;
+import ra.coursemanagement.model.entity.Courses;
 import ra.coursemanagement.model.entity.Student;
 
 import java.util.List;
@@ -14,10 +17,33 @@ public class ManagementStudent {
 
     public static void displayListStudent() {
         List<Student> listStudents = businessStudent.getAllSt();
-        System.out.println("===========Danh sách học viên============");
-        if (!listStudents.isEmpty()) {
-            listStudents.forEach(System.out::println);
-        } else System.out.println("Danh sách học viên trống");
+
+        if (listStudents == null || listStudents.isEmpty()) {
+            System.out.println("Không có sinh viên nào.");
+            return;
+        }
+        int[] widths = {3, 15, 12, 25, 10, 10, 26};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "TÊN HỌC VIÊN", "NGÀY SINH", "EMAIL", "GIỚI TÍNH", "SĐT", "NGÀY TẠO"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Student s : listStudents) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(s.getId()),
+                            s.getName(),
+                            s.getDob().toString(),
+                            s.getEmail(),
+                            StudentSex.sexFromDB(s.isSex()).getDisplayName(),
+                            s.getPhone(),
+                            s.getCreateAt().toString()
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
     }
 
     public static void addStudent(Scanner scanner) {
@@ -50,7 +76,13 @@ public class ManagementStudent {
             System.out.println("5. Cập nhật số điện thoại sinh viên");
             System.out.println("6. Thoát");
             System.out.print("Lựa chọn của bạn là: ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     student.setName(ValidStudent.inputNameStudent(scanner));
@@ -112,7 +144,6 @@ public class ManagementStudent {
             System.out.println("Chọn tính năng tìm kiếm: ");
             System.out.println("1. Tìm kiếm theo id");
             System.out.println("2. Tìm kiếm theo tên");
-            System.out.println("3. Tìm kiếm theo email");
             System.out.println("4. Để thoát");
             System.out.print("Lựa chọn của bạn là: ");
             int choice = Integer.parseInt(scanner.nextLine());
@@ -122,8 +153,6 @@ public class ManagementStudent {
                     break;
                 case 2:
                     findStudentByName(scanner);
-                    break;
-                case 3:
                     break;
                 case 4:
                     return;
@@ -143,11 +172,31 @@ public class ManagementStudent {
             } else {
                 Student student = businessStudent.getStById(idFindStu);
                 if (student == null) {
-                    System.out.println("Không tồn tại sinh viên với id này");
-                } else {
-                    System.out.println(student);
-                    isExit = true;
+                    System.out.println("Không có sinh viên nào.");
+                    return;
                 }
+                int[] widths = {3, 15, 12, 25, 10, 10, 26};
+                TablePrinter.printLine(widths);
+                TablePrinter.printRow(
+                        new String[]{"ID", "TÊN HỌC VIÊN", "NGÀY SINH", "EMAIL", "GIỚI TÍNH", "SĐT", "NGÀY TẠO"},
+                        widths
+                );
+                TablePrinter.printLine(widths);
+//                for (Student s : listStudents) {
+                TablePrinter.printRow(
+                        new String[]{
+                                String.valueOf(student.getId()),
+                                student.getName(),
+                                student.getDob().toString(),
+                                student.getEmail(),
+                                StudentSex.sexFromDB(student.isSex()).getDisplayName(),
+                                student.getPhone(),
+                                student.getCreateAt().toString()
+                        },
+                        widths
+                );
+//                }
+                TablePrinter.printLine(widths);
             }
         } while (isExit);
     }
@@ -158,11 +207,34 @@ public class ManagementStudent {
             System.out.println("Mời nhập tên sinh viên mà bạn muốn tìm: ");
             String nameFindStu = scanner.nextLine();
             List<Student> listStu = businessStudent.getStByName(nameFindStu);
-            if (listStu == null) {
-                System.out.println("Không tồn tại sinh viên bạn tìm");
-            } else {
-                listStu.forEach(System.out::println);
+
+            if (listStu == null || listStu.isEmpty()) {
+                System.out.println("Không có sinh viên nào.");
+                return;
             }
+            int[] widths = {3, 15, 12, 25, 10, 10, 26};
+            TablePrinter.printLine(widths);
+            TablePrinter.printRow(
+                    new String[]{"ID", "TÊN HỌC VIÊN", "NGÀY SINH", "EMAIL", "GIỚI TÍNH", "SĐT", "NGÀY TẠO"},
+                    widths
+            );
+            TablePrinter.printLine(widths);
+            for (Student s : listStu) {
+                TablePrinter.printRow(
+                        new String[]{
+                                String.valueOf(s.getId()),
+                                s.getName(),
+                                s.getDob().toString(),
+                                s.getEmail(),
+                                StudentSex.sexFromDB(s.isSex()).getDisplayName(),
+                                s.getPhone(),
+                                s.getCreateAt().toString()
+                        },
+                        widths
+                );
+            }
+            TablePrinter.printLine(widths);
+
             isExit = false;
         } while (isExit);
     }
@@ -176,19 +248,25 @@ public class ManagementStudent {
             System.out.println("4. Sắp xếp theo tăng dần");
             System.out.println("5. Thoát");
             System.out.print("Lựa chọn của bạn là: ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice ;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
             switch (choice) {
                 case 1:
-                    businessStudent.getAllSort("name", "DESC").forEach(System.out::println);
+                    sortByNameDESC(scanner);
                     break;
                 case 2:
-                    businessStudent.getAllSort("name", "ASC").forEach(System.out::println);
+                    sortByNameASC(scanner);
                     break;
                 case 3:
-                    businessStudent.getAllSort("id", "DESC").forEach(System.out::println);
+                    sortByIdDESC(scanner);
                     break;
                 case 4:
-                    businessStudent.getAllSort("id", "ASC").forEach(System.out::println);
+                    sortByIdASC(scanner);
                     break;
                 case 5:
                     return;
@@ -196,6 +274,126 @@ public class ManagementStudent {
                     System.err.println("Vui lòng chọn từ 1-5");
             }
         } while (true);
+    }
+
+    public static void sortByNameDESC(Scanner scanner) {
+        List<Student> listStudents = businessStudent.getAllSort("name", "DESC");
+        if (listStudents == null || listStudents.isEmpty()) {
+            System.out.println("Không có sinh viên nào.");
+            return;
+        }
+        int[] widths = {3, 15, 12, 25, 10, 10, 26};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "TÊN HỌC VIÊN", "NGÀY SINH", "EMAIL", "GIỚI TÍNH", "SĐT", "NGÀY TẠO"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Student s : listStudents) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(s.getId()),
+                            s.getName(),
+                            s.getDob().toString(),
+                            s.getEmail(),
+                            StudentSex.sexFromDB(s.isSex()).getDisplayName(),
+                            s.getPhone(),
+                            s.getCreateAt().toString()
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
+    }
+
+    public static void sortByIdASC(Scanner scanner) {
+        List<Student> listStudents = businessStudent.getAllSort("id", "ASC");
+        if (listStudents == null || listStudents.isEmpty()) {
+            System.out.println("Không có sinh viên nào.");
+            return;
+        }
+        int[] widths = {3, 15, 12, 25, 10, 10, 26};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "TÊN HỌC VIÊN", "NGÀY SINH", "EMAIL", "GIỚI TÍNH", "SĐT", "NGÀY TẠO"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Student s : listStudents) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(s.getId()),
+                            s.getName(),
+                            s.getDob().toString(),
+                            s.getEmail(),
+                            StudentSex.sexFromDB(s.isSex()).getDisplayName(),
+                            s.getPhone(),
+                            s.getCreateAt().toString()
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
+    }
+
+    public static void sortByIdDESC(Scanner scanner) {
+        List<Student> listStudents = businessStudent.getAllSort("id", "DESC");
+        if (listStudents == null || listStudents.isEmpty()) {
+            System.out.println("Không có sinh viên nào.");
+            return;
+        }
+        int[] widths = {3, 15, 12, 25, 10, 10, 26};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "TÊN HỌC VIÊN", "NGÀY SINH", "EMAIL", "GIỚI TÍNH", "SĐT", "NGÀY TẠO"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Student s : listStudents) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(s.getId()),
+                            s.getName(),
+                            s.getDob().toString(),
+                            s.getEmail(),
+                            StudentSex.sexFromDB(s.isSex()).getDisplayName(),
+                            s.getPhone(),
+                            s.getCreateAt().toString()
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
+    }
+
+    public static void sortByNameASC(Scanner scanner) {
+        List<Student> listStudents = businessStudent.getAllSort("name", "ASC");
+        if (listStudents == null || listStudents.isEmpty()) {
+            System.out.println("Không có sinh viên nào.");
+            return;
+        }
+        int[] widths = {3, 15, 12, 25, 10, 10, 26};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "TÊN HỌC VIÊN", "NGÀY SINH", "EMAIL", "GIỚI TÍNH", "SĐT", "NGÀY TẠO"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Student s : listStudents) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(s.getId()),
+                            s.getName(),
+                            s.getDob().toString(),
+                            s.getEmail(),
+                            StudentSex.sexFromDB(s.isSex()).getDisplayName(),
+                            s.getPhone(),
+                            s.getCreateAt().toString()
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
     }
 
     public void displayMenuManageStudent() {
@@ -208,7 +406,13 @@ public class ManagementStudent {
             System.out.println("6. Sắp xếp theo tên hoặc id (tăng/giảm dần");
             System.out.println("7. Quay về menu chính");
             System.out.print("Chọn chức năng: ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     displayListStudent();

@@ -1,7 +1,7 @@
 package ra.coursemanagement.presentation;
 
+import ra.coursemanagement.TablePrinter;
 import ra.coursemanagement.business.IBusinessCourse;
-import ra.coursemanagement.business.IBusinessStudent;
 import ra.coursemanagement.business.impl.BusinessCourseImpl;
 import ra.coursemanagement.business.valid.ValidCourse;
 import ra.coursemanagement.model.entity.Courses;
@@ -14,9 +14,31 @@ public class ManagementCourse {
     Scanner scanner = new Scanner(System.in);
 
     public static void displayListCourse() {
-        if (businessCourse.getListCourses() == null) {
-            System.out.println("Không có khóa học nào");
-        } else businessCourse.getListCourses().forEach(System.out::println);
+        List<Courses> list = businessCourse.getListCourses();
+        if (list == null || list.isEmpty()) {
+            System.out.println("Không có khóa học nào.");
+            return;
+        }
+        int[] widths = {5, 25, 15, 20,25};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "Thời gian đăng ký"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Courses c : list) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(c.getIdCourses()),
+                            c.getCourseName(),
+                            c.getDurationCourse(),
+                            c.getInstructorCourse(),
+                            c.getCreatedDate().toString()
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
     }
 
     public static void addNewCourse(Scanner scanner) {
@@ -40,7 +62,13 @@ public class ManagementCourse {
                 System.out.println("3. Sửa giảng viên");
                 System.out.println("4. Thoát");
                 System.out.print("Lựa chọn của bạn là: ");
-                int choice = Integer.parseInt(scanner.nextLine());
+                int choice ;
+                try {
+                    choice = Integer.parseInt(scanner.nextLine());
+                } catch (Exception e) {
+                    System.err.println("Vui lòng nhập số.");
+                    continue;
+                }
                 switch (choice) {
                     case 1:
                         course.setCourseName(ValidCourse.inputCourseName(scanner));
@@ -70,12 +98,30 @@ public class ManagementCourse {
             System.out.print("Nhập tên khóa học mà bạn muốn tìm: ");
             String nameSearch = scanner.nextLine();
             List<Courses> listCourses = businessCourse.getCourseByName(nameSearch);
-            if (listCourses == null) {
-                System.out.println("Không tồn tại tên bạn muốn tìm");
-            } else {
-                listCourses.forEach(System.out::println);
+            if (listCourses == null || listCourses.isEmpty()) {
+                System.out.println("Không có khóa học nào.");
+                return;
             }
-            isExit = false;
+            int[] widths = {5, 25, 15, 20,25};
+            TablePrinter.printLine(widths);
+            TablePrinter.printRow(
+                    new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "Thời gian đăng ký"},
+                    widths
+            );
+            TablePrinter.printLine(widths);
+            for (Courses c : listCourses) {
+                TablePrinter.printRow(
+                        new String[]{
+                                String.valueOf(c.getIdCourses()),
+                                c.getCourseName(),
+                                c.getDurationCourse(),
+                                c.getInstructorCourse(),
+                                c.getCreatedDate().toString()
+                        },
+                        widths
+                );
+            }
+            TablePrinter.printLine(widths);
         }
     }
 
@@ -85,13 +131,19 @@ public class ManagementCourse {
             System.out.println("1. Sắp xếp theo id giảm dần.");
             System.out.println("2. Sắp xếp theo id tăng dần");
             System.out.println("3. Thoát");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice ;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
             switch (choice) {
                 case 1:
-                    businessCourse.getAllCoursesSortById("desc").forEach(System.out::println);
+                    displaySortByIdDESC();
                     break;
                 case 2:
-                    businessCourse.getAllCoursesSortById("asc").forEach(System.out::println);
+                    displaySortByIdASC();
                     break;
                 case 3:
                     return;
@@ -99,6 +151,62 @@ public class ManagementCourse {
                     System.err.println("Chỉ được chọn 1 hoặc 2");
             }
         }
+    }
+
+    public static void displaySortByIdASC() {
+        List<Courses> listByIdDesc = businessCourse.getAllCoursesSortById("asc");
+        if (listByIdDesc == null || listByIdDesc.isEmpty()) {
+            System.out.println("Không có khóa học nào.");
+            return;
+        }
+        int[] widths = {5, 25, 15, 20,25};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "Thời gian đăng ký"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Courses c : listByIdDesc) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(c.getIdCourses()),
+                            c.getCourseName(),
+                            c.getDurationCourse(),
+                            c.getInstructorCourse(),
+                            c.getCreatedDate().toString()
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
+    }
+
+    public static void displaySortByIdDESC() {
+        List<Courses> listByIdDesc = businessCourse.getAllCoursesSortById("desc");
+        if (listByIdDesc == null || listByIdDesc.isEmpty()) {
+            System.out.println("Không có khóa học nào.");
+            return;
+        }
+        int[] widths = {5, 25, 15, 20,25};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "Thời gian đăng ký"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Courses c : listByIdDesc) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(c.getIdCourses()),
+                            c.getCourseName(),
+                            c.getDurationCourse(),
+                            c.getInstructorCourse(),
+                            c.getCreatedDate().toString()
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
     }
 
     public void deleteCourse(Scanner scanner) {
@@ -129,15 +237,25 @@ public class ManagementCourse {
 
     public void displayMenuCourse() {
         do {
-            System.out.println("1. Hiển danh sách khóa học");
-            System.out.println("2. Thêm mới khóa học");
-            System.out.println("3. Chỉnh sửa thông tin khóa học (hiển thị menu chọn thuộc tính cần sửa)");
-            System.out.println("4. Xóa khóa học (xác nhận trước khi xóa)");
-            System.out.println("5. Tìm kiếm theo tên (tương đối)");
-            System.out.println("6. Sắp xếp theo tên hoặc id (tăng/giảm dần");
-            System.out.println("7. Quay về menu chính");
+            System.out.println("\n=========== QUẢN LÝ KHÓA HỌC ===========");
+
+            System.out.printf("%-3s | %-40s\n", "1", "Hiển thị danh sách khóa học");
+            System.out.printf("%-3s | %-40s\n", "2", "Thêm mới khóa học");
+            System.out.printf("%-3s | %-40s\n", "3", "Chỉnh sửa thông tin khóa học");
+            System.out.printf("%-3s | %-40s\n", "4", "Xóa khóa học");
+            System.out.printf("%-3s | %-40s\n", "5", "Tìm kiếm khóa học theo tên");
+            System.out.printf("%-3s | %-40s\n", "6", "Sắp xếp khóa học (ID)");
+            System.out.printf("%-3s | %-40s\n", "7", "Quay về menu chính");
+
+            System.out.println("========================================");
             System.out.print("Chọn chức năng: ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice ;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     displayListCourse();

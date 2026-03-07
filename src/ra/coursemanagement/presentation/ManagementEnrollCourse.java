@@ -4,14 +4,20 @@ import java.util.Scanner;
 
 public class ManagementEnrollCourse {
     Scanner scanner = new Scanner(System.in);
-    public void menuEnrollCouurse(){
+    public void menuEnrollCourse(){
         do {
             System.out.println("1. Hiển thị học viên theo từng khóa học");
             System.out.println("2. Thêm học viên vào khóa học");
             System.out.println("3. Xóa học viên khỏi khóa học");
             System.out.println("4. Quay về menu chính");
             System.out.print("Chọn chức năng: ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice ;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
 
             switch (choice) {
                 case 1:

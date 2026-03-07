@@ -7,16 +7,23 @@ public class AdminView {
     public void showAdminMenu(){
         ManagementCourse mc = new ManagementCourse();
         ManagementStudent ms = new ManagementStudent();
+        ManagementEnrollCourse emc = new ManagementEnrollCourse();
         do {
-            System.out.println("\n=====MENU ADMIN=====");
+            System.out.println("\n=============== MENU ADMIN ================");
             System.out.println("1. Quản lý khóa học");
             System.out.println("2. Quản lý học viên");
             System.out.println("3. Quản lý đăng ký khóa học");
             System.out.println("4. Thống kê học viên theo khóa học");
             System.out.println("5. Đăng xuất");
-            System.out.println("=======================");
+            System.out.println("===========================================");
             System.out.print("Chọn chức năng: ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     mc.displayMenuCourse();
@@ -25,11 +32,12 @@ public class AdminView {
                     ms.displayMenuManageStudent();
                     break;
                 case 3:
+                    emc.menuEnrollCourse();
                     break;
                 case 4:
                     break;
                 case 5:
-                    break;
+                    return;
                 default:
                     System.err.println("Vui lòng chọn từ 1 đến 5");
             }

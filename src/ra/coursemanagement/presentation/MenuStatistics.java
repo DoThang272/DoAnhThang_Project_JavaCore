@@ -12,7 +12,13 @@ public class MenuStatistics {
             System.out.println("4. Liệt kê khoá học có trên 10 học viên");
             System.out.println("5. Quay về menu chính");
             System.out.print("Chọn chức năng: ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice ;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
 
             switch (choice) {
                 case 1:

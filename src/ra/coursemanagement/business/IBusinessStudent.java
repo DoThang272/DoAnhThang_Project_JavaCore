@@ -12,5 +12,5 @@ public interface IBusinessStudent {
     Student getStById(int id);
     List<Student> getStByName(String name);
     List<Student> getAllSort(String sortBy, String direction);
-
+    boolean loginStudent(String username, String password);
 }

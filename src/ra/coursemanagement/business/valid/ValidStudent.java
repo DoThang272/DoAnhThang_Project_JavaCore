@@ -1,5 +1,7 @@
 package ra.coursemanagement.business.valid;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -55,7 +57,13 @@ public class ValidStudent {
             System.out.println("1. Nam");
             System.out.println("2. Nữ");
             System.out.print("Lựa chọn: ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice ;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.err.println("Vui lòng nhập số.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     return true;
@@ -85,13 +93,27 @@ public class ValidStudent {
         String regPasswordStu = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}";
         while (true){
             System.out.println("Mời nhập password (Gồm ít nhất 8 ký tự và bao gồm ít nhất 1 chữ thường, 1 chữ hoa, 1 ký tự đặc biệt): ");
-            String passwordInput = scanner.nextLine().trim();
+            String passwordInput = scanner.nextLine();
             if(!passwordInput.isEmpty()){
                 if (Pattern.matches(regPasswordStu, passwordInput)) {
-                    return  passwordInput;
+                    String hashPass = BCrypt.hashpw(passwordInput, BCrypt.gensalt());
+                    return  hashPass;
                 }
                 System.err.println("Không đúng định dạng.");
             }else System.out.println("Không được để trống.");
+        }
+    }
+
+    public static String inputPasswordLogin(Scanner scanner) {
+        while (true){
+            System.out.println("Nhập mật khẩu: ");
+            String password = scanner.nextLine();
+
+            if(!password.isEmpty()){
+                return password;
+            }
+
+            System.err.println("Không được để trống.");
         }
     }
 

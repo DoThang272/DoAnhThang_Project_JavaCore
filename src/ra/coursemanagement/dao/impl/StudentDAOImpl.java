@@ -220,4 +220,35 @@ public class StudentDAOImpl implements IStudentDAO {
         }
         return listStudents;
     }
+
+    @Override
+    public Student findStByEmail(String email) {
+        Connection conn = null;
+        CallableStatement callSt = null;
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("{call find_stdent_by_email(?)}");
+            callSt.setString(1, email);
+            ResultSet resultSet = callSt.executeQuery();
+            if (resultSet.next()) {
+                Student student = new Student();
+                student.setId(resultSet.getInt("id"));
+                student.setName(resultSet.getString("name"));
+                student.setDob(resultSet.getDate("dob").toLocalDate());
+                student.setEmail(resultSet.getString("email"));
+                student.setSex(resultSet.getBoolean("sex"));
+                student.setPhone(resultSet.getString("phone"));
+                student.setPassword(resultSet.getString("password"));
+                student.setCreateAt(resultSet.getTimestamp("create_at").toLocalDateTime());
+                System.out.println("TESSTT: "+student);
+                return student;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            ConnectionDB.closeConnection(conn, callSt);
+        }
+        return  null;
+    }
 }

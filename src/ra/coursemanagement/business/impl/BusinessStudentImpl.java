@@ -1,5 +1,6 @@
 package ra.coursemanagement.business.impl;
 
+import org.mindrot.jbcrypt.BCrypt;
 import ra.coursemanagement.business.IBusinessStudent;
 import ra.coursemanagement.dao.impl.StudentDAOImpl;
 import ra.coursemanagement.dao.itf.IStudentDAO;
@@ -32,6 +33,7 @@ public class BusinessStudentImpl implements IBusinessStudent {
 
     @Override
     public Student getStById(int id) {
+
         return businessStudent.findStById(id);
     }
 
@@ -43,5 +45,15 @@ public class BusinessStudentImpl implements IBusinessStudent {
     @Override
     public List<Student> getAllSort(String sortBy, String direction) {
         return businessStudent.findAllSort(sortBy, direction);
+    }
+
+    @Override
+    public boolean loginStudent(String username, String password) {
+        Student student = businessStudent.findStByEmail(username);
+        if(student == null){
+            return false;
+        }else {
+            return BCrypt.checkpw(password,student.getPassword());
+        }
     }
 }

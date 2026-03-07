@@ -12,5 +12,5 @@ public interface IStudentDAO {
     Student findStById(int id);
     List<Student> findStByName(String name);
     List<Student> findAllSort(String sortBy, String direction);
-
+    Student findStByEmail(String email);
 }
