@@ -2,6 +2,7 @@ package ra.coursemanagement.presentation;
 
 import ra.coursemanagement.business.impl.BusinessStudentImpl;
 import ra.coursemanagement.business.valid.ValidStudent;
+import ra.coursemanagement.config.SessionLogin;
 import ra.coursemanagement.model.entity.Student;
 
 import java.util.Scanner;
@@ -28,8 +29,9 @@ public class StudentLoginView {
                 }
                 System.err.println("Mật khẩu không được để trống.");
             }
-            boolean result = businessStudentImpl.loginStudent(username, password);
-            if (result) {
+            Student student = businessStudentImpl.loginStudent(username, password);
+            if (student != null) {
+                SessionLogin.idUserLogin = student.getId();
                 System.out.println("Đăng nhập thành công.");
                 StudentView studentView = new StudentView();
                 studentView.showMenuStudent();

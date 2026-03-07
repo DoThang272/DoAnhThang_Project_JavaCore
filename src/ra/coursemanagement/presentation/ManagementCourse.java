@@ -22,7 +22,7 @@ public class ManagementCourse {
         int[] widths = {5, 25, 15, 20,25};
         TablePrinter.printLine(widths);
         TablePrinter.printRow(
-                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "Thời gian đăng ký"},
+                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "THỜI GIAN TẠO"},
                 widths
         );
         TablePrinter.printLine(widths);
@@ -105,7 +105,7 @@ public class ManagementCourse {
             int[] widths = {5, 25, 15, 20,25};
             TablePrinter.printLine(widths);
             TablePrinter.printRow(
-                    new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "Thời gian đăng ký"},
+                    new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "THỜI GIAN TẠO"},
                     widths
             );
             TablePrinter.printLine(widths);
@@ -162,7 +162,7 @@ public class ManagementCourse {
         int[] widths = {5, 25, 15, 20,25};
         TablePrinter.printLine(widths);
         TablePrinter.printRow(
-                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "Thời gian đăng ký"},
+                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "THỜI GIAN TẠO"},
                 widths
         );
         TablePrinter.printLine(widths);
@@ -190,7 +190,7 @@ public class ManagementCourse {
         int[] widths = {5, 25, 15, 20,25};
         TablePrinter.printLine(widths);
         TablePrinter.printRow(
-                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "Thời gian đăng ký"},
+                new String[]{"ID", "TÊN KHÓA HỌC", "THỜI GIAN", "GIẢNG VIÊN", "THỜI GIAN TẠO"},
                 widths
         );
         TablePrinter.printLine(widths);

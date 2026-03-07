@@ -240,7 +240,6 @@ public class StudentDAOImpl implements IStudentDAO {
                 student.setPhone(resultSet.getString("phone"));
                 student.setPassword(resultSet.getString("password"));
                 student.setCreateAt(resultSet.getTimestamp("create_at").toLocalDateTime());
-                System.out.println("TESSTT: "+student);
                 return student;
             }
         }catch (Exception e) {

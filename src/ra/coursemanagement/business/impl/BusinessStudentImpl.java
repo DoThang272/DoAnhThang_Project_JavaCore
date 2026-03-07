@@ -48,12 +48,16 @@ public class BusinessStudentImpl implements IBusinessStudent {
     }
 
     @Override
-    public boolean loginStudent(String username, String password) {
+    public Student loginStudent(String username, String password) {
         Student student = businessStudent.findStByEmail(username);
         if(student == null){
-            return false;
+            return null;
         }else {
-            return BCrypt.checkpw(password,student.getPassword());
+
+            boolean result =  BCrypt.checkpw(password,student.getPassword());
+            if (result == true){
+                return student;
+            }else return null;
         }
     }
 }

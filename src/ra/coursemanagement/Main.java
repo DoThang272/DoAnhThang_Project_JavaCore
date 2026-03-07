@@ -28,16 +28,16 @@ public class Main {
             }
             switch (choice){
                 case 1:
-//                    AdminLoginView  adminLoginView = new AdminLoginView();
-//                    adminLoginView.login(scanner);
-                    AdminView adminView = new AdminView();
-                    adminView.showAdminMenu();
+                    AdminLoginView  adminLoginView = new AdminLoginView();
+                    adminLoginView.login(scanner);
+//                    AdminView adminView = new AdminView();
+//                    adminView.showAdminMenu();
                     break;
                 case 2:
-                    StudentView studentView = new StudentView();
-                    studentView.showMenuStudent();
-//                    StudentLoginView studentLoginView = new StudentLoginView();
-//                    studentLoginView.login(scanner);
+//                    StudentView studentView = new StudentView();
+//                    studentView.showMenuStudent();
+                    StudentLoginView studentLoginView = new StudentLoginView();
+                    studentLoginView.login(scanner);
                     break;
                 case 3:
                     System.exit(0);
