@@ -1,6 +1,5 @@
 package ra.coursemanagement.model.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Enrollment {
@@ -8,12 +7,12 @@ public class Enrollment {
     private int studentId;
     private int courseId;
     private LocalDateTime registered_at;
-    private boolean status;
+    private String status;
 
     public Enrollment() {
     }
 
-    public Enrollment(int id, int studentId, int courseId, LocalDateTime registered_at, boolean status) {
+    public Enrollment(int id, int studentId, int courseId, LocalDateTime registered_at, String status) {
         this.id = id;
         this.studentId = studentId;
         this.courseId = courseId;
@@ -38,7 +37,7 @@ public class Enrollment {
     }
 
     public int getCourseId() {
-        return courseId;
+        return this.courseId;
     }
 
     public void setCourseId(int courseId) {
@@ -53,11 +52,11 @@ public class Enrollment {
         this.registered_at = registered_at;
     }
 
-    public boolean isStatus() {
+    public String isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

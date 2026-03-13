@@ -1,11 +1,15 @@
 package ra.coursemanagement.presentation;
 
+import org.mindrot.jbcrypt.BCrypt;
 import ra.coursemanagement.TablePrinter;
 import ra.coursemanagement.business.BusinessStuEnrollCou;
 import ra.coursemanagement.business.IBusinessCourse;
 import ra.coursemanagement.business.impl.BusinessCourseImpl;
+import ra.coursemanagement.business.valid.ValidStudent;
 import ra.coursemanagement.config.SessionLogin;
 import ra.coursemanagement.model.entity.Courses;
+import ra.coursemanagement.model.entity.Enrollment;
+import ra.coursemanagement.model.entity.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,13 +99,85 @@ public class StudentView {
         }
     }
 
+    public static void displayEnrolledCourse() {
+        int idLogin = SessionLogin.idUserLogin;
+        List<Enrollment> listEnrolledCour = businessStuEnrollCou.displayEnrollmentedCou(idLogin);
+
+        if (listEnrolledCour == null || listEnrolledCour.isEmpty()) {
+            System.out.println("Không có khóa học nào.");
+            return;
+        }
+        int[] widths = {5, 12, 11, 28, 10};
+        TablePrinter.printLine(widths);
+        TablePrinter.printRow(
+                new String[]{"ID", "ID SINH VIÊN", "ID KHÓA HỌC", "THỜI GIAN ĐĂNG KÝ", "TRẠNG THÁI"},
+                widths
+        );
+        TablePrinter.printLine(widths);
+        for (Enrollment e : listEnrolledCour) {
+            TablePrinter.printRow(
+                    new String[]{
+                            String.valueOf(e.getId()),
+                            String.valueOf(e.getStudentId()),
+                            String.valueOf(e.getCourseId()),
+                            String.valueOf(e.getRegistered_at()),
+                            e.isStatus()
+
+                    },
+                    widths
+            );
+        }
+        TablePrinter.printLine(widths);
+    }
+
+    public static void cancelEnrolledCourse(Scanner scanner) {
+        System.out.print("Mời nhập id khóa học mà bạn muốn hủy: ");
+        int idCourse =  Integer.parseInt(scanner.nextLine());
+        boolean result = businessStuEnrollCou.cancelEnrollmentCou(SessionLogin.idUserLogin, idCourse);
+        if (result) {
+            System.out.println("Hủy đăng ký thành công");
+        }else{
+            System.err.println("Hủy không thành công");
+        }
+
+    }
+
+    public static void changePassword(Scanner scanner) {
+        ValidStudent validStudent = new ValidStudent();
+        while (true) {
+            String email = validStudent.inputEmailStudent(scanner);
+            System.out.println("Nhập mật khẩu cũ");
+            String oldPassword = validStudent.inputPasswordStudent(scanner);
+            System.out.println("Nhập mật khẩu mới ");
+            String newPass = validStudent.inputPasswordStudent(scanner).trim();
+//            String newPass = scanner.nextLine().trim();
+            System.out.println("Xác nhận mật khẩu mới: ");
+//            String confirmPass = scanner.nextLine().trim();
+            String confirmPass = validStudent.inputPasswordStudent(scanner).trim();
+            if (!newPass.equals(confirmPass)) {
+                System.out.println("newPass = [" + newPass + "]");
+                System.out.println("confirmPass = [" + confirmPass + "]");
+                System.err.println("Xác nhận không khớp");
+                continue;
+            }
+            boolean result = businessStuEnrollCou.changePassword(email, oldPassword, newPass);
+            if (result){
+                System.out.println("Đổi mật khẩu thành công.");
+                return;
+            }else {
+                System.err.println("Email hoặc mật khẩu cũ không đúng");
+            }
+
+        }
+    }
+
     public void showMenuStudent() {
         do {
             System.out.println("\n=========MENU HỌC VIÊN=========");
             System.out.println("1. Xem danh sách khóa học");
             System.out.println("2. Đăng ký khóa học");
             System.out.println("3. Xem khóa học đã đăng ký");
-            System.out.println("4. Hủy đăng ký (nếu chưa bắt)");
+            System.out.println("4. Hủy đăng ký (nếu chưa xác nhận)");
             System.out.println("5. Đổi mật khẩu");
             System.out.println("6. Đăng xuất");
             System.out.println("==============================");
@@ -123,10 +199,13 @@ public class StudentView {
                     displayMenuEnrollmentCourse(scanner);
                     break;
                 case 3:
+                    displayEnrolledCourse();
                     break;
                 case 4:
+                    cancelEnrolledCourse(scanner);
                     break;
                 case 5:
+                    changePassword(scanner);
                     break;
                 case 6:
                     return;
@@ -151,12 +230,10 @@ public class StudentView {
             }
             switch (choice) {
                 case 1:
-//                    managementCourse.displayListCourse();
                     dislayListCoures();
                     break;
                 case 2:
                     displayListCouresByName(scanner);
-//                    managementCourse.findCourseByName(scanner);
                     break;
                 case 3:
                     return;

@@ -122,6 +122,7 @@ public class ManagementCourse {
                 );
             }
             TablePrinter.printLine(widths);
+            isExit = false;
         }
     }
 

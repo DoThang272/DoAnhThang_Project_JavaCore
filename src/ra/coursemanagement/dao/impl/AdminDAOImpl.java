@@ -15,11 +15,12 @@ public class AdminDAOImpl implements IAdminDAO {
     public Admin findAdminByusername(String username) {
         Connection conn = null;
         CallableStatement callSt = null;
+        ResultSet rs = null;
         try {
             conn = ConnectionDB.openConnection();
             callSt = conn.prepareCall("{call find_admin_by_username(?)}");
             callSt.setString(1, username);
-            ResultSet rs = callSt.executeQuery();
+             rs = callSt.executeQuery();
             if (rs.next()) {
                 Admin admin = new Admin();
                 admin.setId(rs.getInt("id"));
@@ -30,6 +31,11 @@ public class AdminDAOImpl implements IAdminDAO {
         }catch (Exception e){
             e.printStackTrace();
         }finally {
+            try {
+                if (rs != null) rs.close();
+            } catch (Exception ignored) {}
+
+            ConnectionDB.closeConnection(conn, callSt);
             ConnectionDB.closeConnection(conn,callSt);
         }
         return null;

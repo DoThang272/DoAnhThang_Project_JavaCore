@@ -94,13 +94,14 @@ public class ValidStudent {
         while (true){
             System.out.println("Mời nhập password (Gồm ít nhất 8 ký tự và bao gồm ít nhất 1 chữ thường, 1 chữ hoa, 1 ký tự đặc biệt): ");
             String passwordInput = scanner.nextLine();
-            if(!passwordInput.isEmpty()){
-                if (Pattern.matches(regPasswordStu, passwordInput)) {
-                    String hashPass = BCrypt.hashpw(passwordInput, BCrypt.gensalt());
-                    return  hashPass;
-                }
-                System.err.println("Không đúng định dạng.");
-            }else System.out.println("Không được để trống.");
+            if (passwordInput.isEmpty()) {
+                System.out.println("Không được để trống.");
+                continue;
+            }
+            if (Pattern.matches(regPasswordStu, passwordInput)) {
+                return passwordInput;
+            }
+            System.err.println("Không đúng định dạng.");
         }
     }
 

@@ -18,6 +18,8 @@ public class BusinessStudentImpl implements IBusinessStudent {
     }
     @Override
     public boolean addNewSt(Student student) {
+        String hashedPassword = BCrypt.hashpw(student.getPassword(), BCrypt.gensalt());
+        student.setPassword(hashedPassword);
         return  businessStudent.insertNewSt(student);
     }
 

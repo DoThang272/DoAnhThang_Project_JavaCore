@@ -1,9 +1,6 @@
 package ra.coursemanagement.repository;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ConnectionDB {
     private static final String URL = "jdbc:postgresql://localhost:5432/course_management";
@@ -22,20 +19,21 @@ public class ConnectionDB {
     }
 
 //    dong khi lam viec xong
-    public static void closeConnection(Connection conn, CallableStatement callSt){
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (callSt != null) {
-            try {
-                callSt.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+public static void closeConnection(Connection conn, Statement st){
+    if (st != null) {
+        try {
+            st.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
+
+    if (conn != null) {
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
 }
