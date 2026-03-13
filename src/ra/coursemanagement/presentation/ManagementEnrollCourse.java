@@ -1,5 +1,9 @@
 package ra.coursemanagement.presentation;
 
+import ra.coursemanagement.business.BusinessStatistic;
+import ra.coursemanagement.model.entity.StudentInCourse;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class ManagementEnrollCourse {
@@ -18,11 +22,9 @@ public class ManagementEnrollCourse {
                 System.err.println("Vui lòng nhập số.");
                 continue;
             }
-
             switch (choice) {
                 case 1:
-                    ManagementCourse mc = new ManagementCourse();
-                    mc.displayMenuCourse();
+                    displayStudentInCourse();
                     break;
                 case 2:
                     break;
@@ -34,5 +36,27 @@ public class ManagementEnrollCourse {
                     System.err.println("Vui lòng chọn từ 1 đến 4");
             }
         }while (true);
+    }
+
+    public static void displayStudentInCourse(){
+        BusinessStatistic businessStatistic = new BusinessStatistic();
+        List<StudentInCourse> listStInCourse = businessStatistic.getBusinessStatistic();
+        String currentCourse = "";
+        for (StudentInCourse sc :  listStInCourse){
+            if (!sc.getCourseName().equals(currentCourse)) {
+                currentCourse = sc.getCourseName();
+                System.out.println("\n========== " + currentCourse.toUpperCase() + " ==========");
+                System.out.println("+----+----------------------+---------------------------+");
+                System.out.printf("| %-2s | %-20s | %-25s |\n", "ID", "NAME", "EMAIL");
+                System.out.println("+----+----------------------+---------------------------+");
+            }
+            System.out.printf(
+                    "| %-2d | %-20s | %-25s |\n",
+                    sc.getStudentId(),
+                    sc.getStudentName(),
+                    sc.getEmail()
+            );
+        }
+        System.out.println("+----+----------------------+---------------------------+\n\n");
     }
 }

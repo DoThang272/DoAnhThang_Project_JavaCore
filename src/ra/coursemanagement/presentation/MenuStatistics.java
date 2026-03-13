@@ -19,11 +19,8 @@ public class MenuStatistics {
                 System.err.println("Vui lòng nhập số.");
                 continue;
             }
-
             switch (choice) {
                 case 1:
-                    ManagementCourse mc = new ManagementCourse();
-                    mc.displayMenuCourse();
                     break;
                 case 2:
                     break;
